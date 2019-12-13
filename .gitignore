@@ -1,0 +1,5 @@
+.idea/
+vendor/
+bootstrap.php
+config.ini
+.phpunit*
