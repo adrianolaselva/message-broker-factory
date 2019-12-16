@@ -1,5 +1,6 @@
 .idea/
 vendor/
 bootstrap.php
+producer.php
 config.ini
 .phpunit*

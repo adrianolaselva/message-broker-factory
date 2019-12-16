@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageBroker\Impl;
+namespace MessageBroker\Brokers\Impl;
 
 use Closure;
 use Enqueue\RdKafka\RdKafkaConnectionFactory;
@@ -58,32 +58,45 @@ class KafkaMessageBroker extends MessageBrokerAbstract implements IMessageBroker
      */
     public function publish(string $topic, array $message, array $properties = [], array $headers = []): void
     {
+        $message = $this->context->createMessage(json_encode($message), $properties, $headers);
+        $message->setMessageId(sha1(time()));
+
         $this->context->createProducer()
             ->send(
                 $this->context->createQueue($topic),
-                $this->context->createMessage(json_encode($message), $properties, $headers)
+                $message
             );
     }
 
     /**
      * @param string $topic
      * @param Closure $clojure
+     * @throws \Exception
      */
     public function consumer(string $topic, Closure $clojure): void
     {
         $consumer = $this->getConsumer($topic);
 
         do {
-            $message = $consumer->receive();
+            try {
+                $message = $consumer->receive();
 
-            if(empty($message))
-                continue;
+                if(empty($message))
+                    continue;
 
-            $return = $clojure($message, $this);
+                $return = $clojure($message, $this);
 
-            if(!$return)
-                break;
+                if(is_null($return))
+                    continue;
 
+                if(!$return)
+                    break;
+
+            } catch (\LogicException $ex) {
+
+            } catch (\Exception $ex){
+                throw $ex;
+            }
         } while(true);
     }
 
@@ -123,4 +136,5 @@ class KafkaMessageBroker extends MessageBrokerAbstract implements IMessageBroker
 
         $this->context = $this->connection->createContext();
     }
+
 }

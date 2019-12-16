@@ -2,6 +2,7 @@
 
 namespace Tests\MessageBroker;
 
+use MessageBroker\Factories\Impl\KafkaMessageBrokerFactory;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
@@ -13,7 +14,7 @@ class TestCase extends BaseTestCase
 
     protected function setUp(): void
     {
-        $this->kafkaMessageBroker = \MessageBroker\MessageBrokerFactory::getInstance(\MessageBroker\Enum\MessageBrokerTypeEnum::KAFKA);
+        $this->kafkaMessageBroker = KafkaMessageBrokerFactory::getInstance();
     }
 
 }

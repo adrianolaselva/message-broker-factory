@@ -1,16 +1,15 @@
 <?php
 
-namespace MessageBroker\Impl;
+namespace MessageBroker\Brokers\Impl;
 
 use Closure;
-use MessageBroker\Interfaces\IMessage;
 use MessageBroker\Interfaces\IMessageBroker;
 
 /**
- * Class RabbitMQMessageBroker
+ * Class BeanstalkBroker
  * @package MessageBroker\Impl
  */
-class RabbitMQMessageBroker implements IMessageBroker
+class BeanstalkBroker implements IMessageBroker
 {
 
     /**
