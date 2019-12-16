@@ -59,3 +59,10 @@ $broker->consumer('event-tracking-topic', function (\Interop\Queue\Message $mess
 ```
 
 Obs: O consumer fica aguardando mensagens de determinado tópico e para consumir
+
+
+## Estrutura
+
+![Arquitetura_inicial](doc/message-broker-factory-1.png)
+
+
